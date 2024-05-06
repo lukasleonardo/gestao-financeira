@@ -1,13 +1,15 @@
 
 import Card from '../components/Card'
 import BasicTable from '../components/Table'
-import '../styles/global.css'
 import { Container } from '@mui/material'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import TrendingDownOutlinedIcon from '@mui/icons-material/TrendingDownOutlined';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import InputField from '../components/InputField'
+import Form from '../components/Form'
 import { useState } from 'react';
+import '../global.css'
+
+
 const Home = () => {
   const [income, setIncome] = useState('0')
   const [outcome, setOutcome] = useState('0')
@@ -21,7 +23,7 @@ const Home = () => {
         <Card title="Saídas" value={outcome} ico={TrendingDownOutlinedIcon}/>
         <Card title="Total" value={total} ico={AttachMoneyIcon}/>
       </div>
-      <InputField/>
+      <Form/>
       <BasicTable/>
       
     </Container>
