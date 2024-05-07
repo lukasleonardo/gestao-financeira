@@ -1,32 +1,55 @@
-
-import Card from '../components/Card'
-import BasicTable from '../components/Table'
+import { useEffect, useState } from 'react';
+import BasicTable from '../components/Table/Table'
 import { Container } from '@mui/material'
-import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
-import TrendingDownOutlinedIcon from '@mui/icons-material/TrendingDownOutlined';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import Form from '../components/Form'
-import { useState } from 'react';
+import Form from '../components/Form/form'
+import Header from '../components/Header/header'
 import '../global.css'
+import Resume from '../components/Resume/resume';
+
 
 
 const Home = () => {
-  const [income, setIncome] = useState('0')
-  const [outcome, setOutcome] = useState('0')
-  const [total, setTotal] = useState('0')
-    
+  const data = localStorage.getItem("transactions")
+  const [transactionList , setTransactionList] = useState(data ? JSON.parse(data):[])
+  const [income, setIncome] = useState<string>(" ")
+  const [expense, setExpense] = useState<string>(" ")
+  const [total, setTotal] = useState<string>(" ")
   
+  useEffect(()=>{
+    const amountExpense = transactionList
+    .filter((item:any)=>item.expense)
+    .map((transaction:any)=>Number(transaction.amount))
+
+    const amountIncome = transactionList
+    .filter((item:any)=>!item.expense)
+    .map((transaction:any)=>Number(transaction.amount))
+
+    const income = amountIncome.reduce((acc:number,cur:number)=>acc + cur,0).toFixed(2)
+    const expense = amountExpense.reduce((acc:number,cur:number)=>acc + cur,0).toFixed(2)
+    const total = (income-expense).toFixed(2)
+
+    setExpense(`R$ ${expense}`)
+    setIncome(`R$ ${income}`)
+    setTotal(`R$ ${total}`)
+  },[transactionList])
+
+  const handleAdd = ((transaction:any)=>{
+    const newArrayTransaction = [...transactionList, transaction]
+
+    setTransactionList(newArrayTransaction)
+    localStorage.setItem("transactions",JSON.stringify(newArrayTransaction))
+  })
+
   return (
+    <>
+    <Header/>
     <Container maxWidth="lg" style={{padding:'1em'}}>
-      <div style={{display:'flex', justifyContent:'space-between'}}>
-        <Card title="Entradas" value={income} ico={TrendingUpOutlinedIcon}/>
-        <Card title="Saídas" value={outcome} ico={TrendingDownOutlinedIcon}/>
-        <Card title="Total" value={total} ico={AttachMoneyIcon}/>
-      </div>
-      <Form/>
-      <BasicTable/>
+      <Resume income={income} expense={expense} total={total}/>
+      <Form handleAdd={handleAdd} />
       
+      <BasicTable  itens={transactionList} setItens={setTransactionList}/>
     </Container>
+    </>
   )
 }
 
