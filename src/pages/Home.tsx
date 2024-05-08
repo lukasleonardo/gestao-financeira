@@ -1,11 +1,11 @@
+import '../global.css'
 import { useEffect, useState } from 'react';
 import BasicTable from '../components/Table/Table'
 import { Container } from '@mui/material'
 import Form from '../components/Form/form'
 import Header from '../components/Header/header'
-import '../global.css'
 import Resume from '../components/Resume/resume';
-import Teste from '../components/teste/teste';
+
 
 
 
@@ -57,4 +57,3 @@ const Home = () => {
 export default Home
 
 
-//<Teste itens={transactionList}/>

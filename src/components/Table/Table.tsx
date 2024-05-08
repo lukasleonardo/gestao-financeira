@@ -5,7 +5,14 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 export default function BasicTable({itens, setItens}:any) {
  
-  
+  const onDelete = (id:Number)=>{
+    const newArray = itens.filter((item:any)=>item.id !== id
+
+    )
+
+    setItens(newArray)
+    localStorage.setItem("transactions",JSON.stringify(newArray))
+  }
 
   return (
     <TableContainer component={Paper} >
@@ -29,7 +36,7 @@ export default function BasicTable({itens, setItens}:any) {
               </TableCell>
               <TableCell align="right">{element.amount} </TableCell>
               <TableCell align="right">{element.expense == false?(<ArrowCircleUpIcon color="success"/>):(<ArrowCircleDownIcon color="error"/>)}</TableCell>
-              <TableCell align="right"><DeleteIcon/></TableCell>
+              <TableCell align="right"><DeleteIcon onClick={()=>onDelete(element.id)}/></TableCell>
             </TableRow>
           ))}
         </TableBody>
